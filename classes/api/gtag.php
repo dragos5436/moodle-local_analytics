@@ -31,39 +31,33 @@ namespace local_analytics\api;
 use stdClass;
 
 /**
- * Guniversal analytics class.
+ * gtag analytics class.
  * @copyright  Bas Brands, Sonsbeekmedia 2017
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class guniversal extends analytics {
+class gtag extends analytics {
     /**
      * Insert the actual tracking code.
      *
      * @return void As the insertion is done through the {js} template API.
      */
     public static function insert_tracking() {
-        global $PAGE, $OUTPUT;
+        global $CFG, $PAGE, $OUTPUT;
 
         $template = new stdClass();
 
-        $template->analyticsid = get_config('local_analytics', 'analyticsid');
+        $template->gtagtrackingid = get_config('local_analytics', 'gtagtrackingid');
         $cleanurl = get_config('local_analytics', 'cleanurl');
 
         if ($cleanurl) {
-            $template->addition = "{'hitType' : 'pageview',
-                'page' : '".self::trackurl(true, true)."',
-                'title' : '".addslashes(format_string($PAGE->heading))."'
-                }";
-        } else {
-            $template->addition = "'pageview'";
+            $template->addition = "'page_path': '".self::trackurl(true, true)."',";
+            $template->addition .= "'page_title': '".addslashes(format_string($PAGE->heading))."',";
         }
-        if (get_config('local_analytics', 'anonymizeip')) {
-            $template->anonymizeip = true;
-        }
-        if (self::should_track() && !empty($template->analyticsid)) {
+
+        if (self::should_track() && !empty($template->gtagtrackingid)) {
             // The templates only contains a "{js}" block; so we don't care about
             // the output; only that the $PAGE->requires are filled.
-            $OUTPUT->render_from_template('local_analytics/guniversal', $template);
+            $CFG->additionalhtmlhead .= $OUTPUT->render_from_template('local_analytics/gtag', $template);
         }
     }
 }

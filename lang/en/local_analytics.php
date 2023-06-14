@@ -54,6 +54,10 @@ $string['anonymizeip_desc'] = 'Google Universal Analytics: When present, the IP 
 $string['head'] = 'Header';
 $string['topofbody'] = 'Top of body';
 $string['footer'] = 'Footer';
+$string['gtag'] = 'Google Analytics 4 (gtag.js)';
+$string['gtagdesc'] = 'Google Analytics 4 (gtag.js), make sure you enter a Tracking ID id when enabling this';
+$string['gtagtrackingid'] = 'Google Analytics 4 Tracking ID';
+$string['gtagtrackingid_desc'] = 'For example: G-12345678';
 /*
  * GDPR compliant
  */
