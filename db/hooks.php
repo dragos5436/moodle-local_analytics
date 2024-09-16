@@ -21,25 +21,17 @@
  * Currently support Google Analytics and Piwik
  *
  * @package    local_analytics
- * @copyright  Bas Brands, Sonsbeekmedia 2017
- * @author     Bas Brands <bas@sonsbeekmedia.nl>, David Bezemer <info@davidbezemer.nl>
+ * @copyright  2024 Leon Stringer <leon.stringer@ntlworld.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_analytics\injector;
-
-/**
- * Output callback, available since Moodle 3.3
- *
- */
-function local_analytics_before_footer() {
-    injector::inject();
-}
-
-/**
- * Output callback, available since Moodle 3.3
- *
- */
-function local_analytics_before_http_headers() {
-    injector::inject();
-}
+$callbacks = [
+    [
+        'hook' => \core\hook\output\before_http_headers::class,
+        'callback' => [\local_analytics\injector::class, 'inject'],
+    ],
+    [
+        'hook' => \core\hook\output\before_standard_footer_html_generation::class,
+        'callback' => [\local_analytics\injector::class, 'inject'],
+    ],
+];
